@@ -31,6 +31,39 @@ var data = [
   {key: "Jelly", value: 40, date: "2014/01/30" },
   {key: "Jelly", value: 39, date: "2014/01/31" }
 ];
+var data2 = [
+{key: "Jelly", value: 60, date: "2014/01/01" },
+  {key: "Jelly", value: 28, date: "2014/01/02" },
+  {key: "Jelly", value: 29, date: "2014/01/03" },
+  {key: "Jelly", value: 26, date: "2014/01/04" },
+  {key: "Jelly", value: 27, date: "2014/01/05" },
+  {key: "Jelly", value: 22, date: "2014/01/06" },
+  {key: "Jelly", value: 26, date: "2014/01/07" },
+  {key: "Jelly", value: 22, date: "2014/01/08" },
+  {key: "Jelly", value: 24, date: "2014/01/09" },
+  {key: "Jelly", value: 27, date: "2014/01/10" },
+  {key: "Jelly", value: 26, date: "2014/01/11" },
+  {key: "Jelly", value: 29, date: "2014/01/12" },
+  {key: "Jelly", value: 26, date: "2014/01/13" },
+  {key: "Jelly", value: 22, date: "2014/01/14" },
+  {key: "Jelly", value: 18, date: "2014/01/15" },
+  {key: "Jelly", value: 17, date: "2014/01/16" },
+  {key: "Jelly", value: 18, date: "2014/01/17" },
+  {key: "Jelly", value: 15, date: "2014/01/18" },
+  {key: "Jelly", value: 13, date: "2014/01/19" },
+  {key: "Jelly", value: 11, date: "2014/01/20" },
+  {key: "Jelly", value: 47, date: "2014/01/21" },
+  {key: "Jelly", value: 46, date: "2014/01/22" },
+  {key: "Jelly", value: 49, date: "2014/01/23" },
+  {key: "Jelly", value: 41, date: "2014/01/24" },
+  {key: "Jelly", value: 42, date: "2014/01/25" },
+  {key: "Jelly", value: 50, date: "2014/01/26" },
+  {key: "Jelly", value: 53, date: "2014/01/27" },
+  {key: "Jelly", value: 51, date: "2014/01/28" },
+  {key: "Jelly", value: 59, date: "2014/01/29" },
+  {key: "Jelly", value: 50, date: "2014/01/30" },
+  {key: "Jelly", value: 59, date: "2014/01/31" }
+]
 var w = 800;
 var h = 450;
 var margin = {
@@ -91,15 +124,26 @@ function plot(params){
 
   //enter()
   this.selectAll('.trendline')
-      .data([params.data])
+      .data([params.data.d1])
       .enter()
         .append('path')
         .classed('trendline', true)
   this.selectAll('.point')
-      .data(params.data)
+      .data(params.data.d1)
       .enter()
         .append('circle')
         .classed('point', true)
+        .attr('r', 2);
+  this.selectAll('.trendline2')
+      .data([params.data.d2])
+      .enter()
+        .append('path')
+        .classed('trendline2', true)
+  this.selectAll('.point2')
+      .data(params.data.d2)
+      .enter()
+        .append('circle')
+        .classed('point2', true)
         .attr('r', 2);
   //update
   this.selectAll('.trendline')
@@ -114,19 +158,42 @@ function plot(params){
       .attr('cy', function(d){
         return y(d.value)
       })
+  this.selectAll('.trendline2')
+      .attr('d', function(d){
+        return line(d);
+      })
+  this.selectAll('.point2')
+      .attr('cx', function(d){
+        var date = dateParser(d.date);
+        return x(date);
+      })
+      .attr('cy', function(d){
+        return y(d.value)
+      })
   //exit()
   this.selectAll('.trendline')
-      .data([params.data])
+      .data([params.data.d1])
       .exit()
       .remove()
   this.selectAll('.point')
-      .data(params.data)
+      .data(params.data.d1)
+      .exit()
+      .remove();
+  this.selectAll('.trendline2')
+      .data([params.data.d2])
+      .exit()
+      .remove()
+  this.selectAll('.point')
+      .data(params.data.d2)
       .exit()
       .remove();
 }
 
 plot.call(chart, {
-  data: data,
+  data: {
+    d1: data,
+    d2: data2
+  },
   axis: {
     x: xAxis,
     y: yAxis

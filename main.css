@@ -34,3 +34,8 @@ body,html{
 	stroke: #ccc;
 	stroke-width: 4px;
 }
+.trendline2{
+	fill: none;
+	stroke: blue;
+	stroke-width: 4px;
+}
