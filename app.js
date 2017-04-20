@@ -122,71 +122,47 @@ function plot(params){
       .attr('transform', 'translate(0,0)')
       .call(params.axis.y)
 
-  //enter()
-  this.selectAll('.trendline')
-      .data([params.data.d1])
-      .enter()
-        .append('path')
-        .classed('trendline', true)
-  this.selectAll('.point')
-      .data(params.data.d1)
-      .enter()
-        .append('circle')
-        .classed('point', true)
-        .attr('r', 2);
-  this.selectAll('.trendline2')
-      .data([params.data.d2])
-      .enter()
-        .append('path')
-        .classed('trendline2', true)
-  this.selectAll('.point2')
-      .data(params.data.d2)
-      .enter()
-        .append('circle')
-        .classed('point2', true)
-        .attr('r', 2);
-  //update
-  this.selectAll('.trendline')
-      .attr('d', function(d){
-        return line(d);
-      })
-  this.selectAll('.point')
-      .attr('cx', function(d){
-        var date = dateParser(d.date);
-        return x(date);
-      })
-      .attr('cy', function(d){
-        return y(d.value)
-      })
-  this.selectAll('.trendline2')
-      .attr('d', function(d){
-        return line(d);
-      })
-  this.selectAll('.point2')
-      .attr('cx', function(d){
-        var date = dateParser(d.date);
-        return x(date);
-      })
-      .attr('cy', function(d){
-        return y(d.value)
-      })
-  //exit()
-  this.selectAll('.trendline')
-      .data([params.data.d1])
-      .exit()
-      .remove()
-  this.selectAll('.point')
-      .data(params.data.d1)
-      .exit()
-      .remove();
-  this.selectAll('.trendline2')
-      .data([params.data.d2])
-      .exit()
-      .remove()
-  this.selectAll('.point')
-      .data(params.data.d2)
-      .exit()
-      .remove();
+  var classes = ['trendline', 'point', 2]
+  function lineExits(classesArray){
+    var that = this
+    for(var i = 1; i <= classesArray[2]; i++){
+      //enter()
+      this.selectAll('.' + classesArray[0]+i)
+        .data([params.data['d'+i]])
+        .enter()
+          .append('path')
+          .classed(classesArray[0]+i, true)
+      this.selectAll('.' + classesArray[1]+i)
+        .data(params.data['d'+i])
+        .enter()
+          .append('circle')
+          .classed(classesArray[1]+i, true)
+          .attr('r', 2);
+      //update
+      that.selectAll('.' + classesArray[0]+i)
+          .attr('d', function(d){
+            return line(d);
+          })
+      that.selectAll('.' + classesArray[1]+i)
+          .attr('cx', function(d){
+            var date = dateParser(d.date);
+            return x(date);
+          })
+          .attr('cy', function(d){
+            return y(d.value)
+          })
+      //exit
+      that.selectAll('.' + classesArray[0]+i)
+        .data([params.data.d1])
+        .exit()
+        .remove()
+      that.selectAll('.' + classesArray[1]+i)
+        .data(params.data.d1)
+        .exit()
+        .remove();
+    }
+  }
+  lineExits.call(chart, classes)
 }
 
 plot.call(chart, {
