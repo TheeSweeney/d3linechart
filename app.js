@@ -70,6 +70,15 @@ var yAxis = d3.svg.axis()
               .scale(y)
               .orient('left')
               .ticks(5)
+var line = d3.svg.line()
+            .x(function(d){
+              var date = dateParser(d.date)
+              return x(date)
+            })
+            .y(function(d){
+              return y(d.value)
+            })
+
 function plot(params){
   this.append('g')
       .classed('x axis', true)
@@ -81,6 +90,11 @@ function plot(params){
       .call(params.axis.y)
 
   //enter()
+  this.selectAll('.trendline')
+      .data([params.data])
+      .enter()
+        .append('path')
+        .classed('trendline', true)
   this.selectAll('.point')
       .data(params.data)
       .enter()
@@ -88,6 +102,10 @@ function plot(params){
         .classed('point', true)
         .attr('r', 2);
   //update
+  this.selectAll('.trendline')
+      .attr('d', function(d){
+        return line(d);
+      })
   this.selectAll('.point')
       .attr('cx', function(d){
         var date = dateParser(d.date);
@@ -97,6 +115,10 @@ function plot(params){
         return y(d.value)
       })
   //exit()
+  this.selectAll('.trendline')
+      .data([params.data])
+      .exit()
+      .remove()
   this.selectAll('.point')
       .data(params.data)
       .exit()

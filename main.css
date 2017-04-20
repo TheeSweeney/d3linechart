@@ -18,15 +18,19 @@ body,html{
 	text-anchor: middle;
 	font-size: 18px;
 }
-.axis path,
-.axis line{
+.axis path, .axis line{
 	fill: none;
 	stroke: #000;
 	shape-rendering: crispEdges;
 }
-.gridline path,
-.gridline line{
+.gridline path, .gridline line{
 	fill: none;
 	stroke: #ccc;
 	shape-rendering: crispEdges;
+}
+
+.trendline{
+	fill: none;
+	stroke: #ccc;
+	stroke-width: 4px;
 }
