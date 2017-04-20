@@ -49,3 +49,9 @@ var svg = d3.select("body").append("svg")
 var chart = svg.append("g")
       .classed("display", true)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var dateParser = d3.time.format('%Y/%m/%d').parse;
+
+
+
+
+
