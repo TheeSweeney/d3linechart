@@ -50,8 +50,44 @@ var chart = svg.append("g")
       .classed("display", true)
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 var dateParser = d3.time.format('%Y/%m/%d').parse;
+var x = d3.time.scale()
+          .domain(d3.extent(data, function(d){
+            var date = dateParser(d.date)
+            return date;
+          }))
+          .range([0, width]);
+var y = d3.scale.linear()
+          .domain([0, d3.max(data, function(d){
+            return d.value;
+          })])
+          .range([height, 0])
+function plot(params){
+  //enter()
+  this.selectAll('.point')
+      .data(params.data)
+      .enter()
+        .append('circle')
+        .classed('point', true)
+        .attr('r', 2);
+  //update
+  this.selectAll('.point')
+      .attr('cx', function(d){
+        var date = dateParser(d.date);
+        return x(date);
+      })
+      .attr('cy', function(d){
+        return y(d.value)
+      })
+  //exit()
+  this.selectAll('.point')
+      .data(params.data)
+      .exit()
+      .remove();
+}
 
-
+plot.call(chart, {
+  data: data
+});
 
 
 
